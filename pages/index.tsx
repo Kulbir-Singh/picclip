@@ -21,10 +21,10 @@ export default function Home() {
 
   const initialGuessesRef = useRef(guesses);
   useEffect(() => {
-    const storedGuesses = window.localStorage.getItem("guess");
+    const storedGuesses = window.localStorage.getItem("guesses");
     if (!storedGuesses) {
       window.localStorage.setItem(
-        "guess",
+        "guesses",
         JSON.stringify({
           remainGuesses: 5,
           answers: [
@@ -45,7 +45,7 @@ export default function Home() {
 
   useEffect(() => {
     if (JSON.stringify(initialGuessesRef.current) !== JSON.stringify(guesses)) {
-      window.localStorage.setItem("guess", JSON.stringify(guesses));
+      window.localStorage.setItem("guesses", JSON.stringify(guesses));
     }
   }, [guesses]);
 
