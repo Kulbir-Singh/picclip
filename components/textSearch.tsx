@@ -53,7 +53,14 @@ export default function TextSearch({
     }
   };
 
+  const accuracy = async () => {
+    const data = await fetch("/api/textMatching?secondWord=" + answer);
+    const jsonRes = await data.json();
+    return jsonRes;
+  };
+
   const handleAnswer = async () => {
+    const acc = await accuracy();
     if (index > 5) {
       return;
     }
@@ -63,7 +70,7 @@ export default function TextSearch({
 
     const validWord = await handleWordSearch(answer);
 
-    if (answer.length == 0 || repetitiveAns || !validWord) {
+    if (answer.length == 0 || repetitiveAns) {
       setError(true);
       window.setTimeout(() => {
         setError(false);
@@ -75,9 +82,12 @@ export default function TextSearch({
         ...guesses,
         remainGuesses: guesses.remainGuesses - 1,
         answers: guesses.answers.map((a, i) =>
-          i === index - 1 ? { ...a, word: answer, accuracy: 100 } : a
+          i === index - 1 ? { ...a, word: answer, accuracy: acc } : a
         ),
       };
+      if (acc == 100) {
+        setIndex(6);
+      }
 
       setGuesses(updatedGuesses);
 

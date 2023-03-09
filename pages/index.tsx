@@ -22,14 +22,35 @@ export default function Home() {
 
   const initialGuessesRef = useRef(guesses);
   useEffect(() => {
-    window?.document?.getElementById("mainContainer").addEventListener(
-      "contextmenu",
-      function (e) {
-        e.preventDefault();
-      },
-      false
-    );
+    // window?.document?.getElementById("mainContainer").addEventListener(
+    //   "contextmenu",
+    //   function (e) {
+    //     e.preventDefault();
+    //   },
+    //   false
+    // );
     const storedGuesses = window.localStorage.getItem("guesses");
+    const d = new Date();
+    let time =
+      d.getHours().toString() +
+      d.getMinutes().toString() +
+      d.getSeconds().toString();
+    console.log(time);
+    if (time === "000") {
+      window.localStorage.setItem(
+        "guesses",
+        JSON.stringify({
+          remainGuesses: 5,
+          answers: [
+            { word: "", accuracy: 0 },
+            { word: "", accuracy: 0 },
+            { word: "", accuracy: 0 },
+            { word: "", accuracy: 0 },
+            { word: "", accuracy: 0 },
+          ],
+        })
+      );
+    }
     if (!storedGuesses) {
       window.localStorage.setItem(
         "guesses",
