@@ -5,6 +5,7 @@ import GuessContainer from "../components/ProgressBar";
 import { AnimatePresence, motion } from "framer-motion";
 import TextSearch from "../components/textSearch";
 import PopUp from "../components/popUp";
+import Script from "next/script";
 
 export default function Home() {
   const [index, setIndex] = useState(1);
@@ -21,6 +22,13 @@ export default function Home() {
 
   const initialGuessesRef = useRef(guesses);
   useEffect(() => {
+    window?.document?.getElementById("mainContainer").addEventListener(
+      "contextmenu",
+      function (e) {
+        e.preventDefault();
+      },
+      false
+    );
     const storedGuesses = window.localStorage.getItem("guesses");
     if (!storedGuesses) {
       window.localStorage.setItem(
@@ -50,7 +58,7 @@ export default function Home() {
   }, [guesses]);
 
   return (
-    <div>
+    <div id="mainContainer">
       <Head>
         <title>Pic Clip</title>
         <meta name="description" content="This is a image guessing app" />
