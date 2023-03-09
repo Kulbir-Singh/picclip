@@ -92,18 +92,18 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="relative h-full">
+      <main className="relative h-screen">
         <PopUp guesses={guesses} index={index} />
-        <div className="mb-2 border-b border-gray-400">
+        <div className="mb-2 border-b border-gray-400 sm:h-[100px]">
           <div className="text-center">
-            <h1 className="pt-2 font-serif text-5xl tracking-widest text-blue-700">
+            <h1 className="pt-2 font-serif text-3xl font-bold tracking-widest text-blue-700 sm:text-5xl">
               PicClip
             </h1>
-            <p className="pt-2 text-blue-300">Guess the picture</p>
+            <p className="pb-1 text-blue-300 sm:pt-2">Guess the picture</p>
           </div>
         </div>
-        <div className="max-w-[600px] m-auto pt-1">
-          <div className="relative flex justify-center m-auto overflow-hidden w-72 sm:w-96 h-72 sm:h-96">
+        <div className="max-w-[600px] m-auto pt-1 flex flex-col h-[calc(100%-130px)]">
+          <div className="relative flex justify-center h-full m-auto overflow-hidden w-72 sm:w-96 min-h-[180px] xs:h-96">
             <Picture
               index={index}
               blur={index > 5 ? 0 : 100 / (index * index)}
@@ -118,21 +118,23 @@ export default function Home() {
                   transition={{ delay: 0.5, stiffness: 80 }}
                   className="absolute bottom-0 max-w-[350px] text-center border-2 border-black border-b-0 p-3 rounded-t-lg bg-black/50"
                 >
-                  <p className="text-3xl">{dailyWord}</p>
+                  <p className="text-xl sm:text-3xl">{dailyWord}</p>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
-          {guesses.answers?.map((answer, index) => {
-            return (
-              <div key={answer.word + index}>
-                <GuessContainer
-                  progress={answer.accuracy}
-                  answer={answer.word}
-                />
-              </div>
-            );
-          })}
+          <div className="h-full xs:h-fit">
+            {guesses.answers?.map((answer, index) => {
+              return (
+                <div key={answer.word + index}>
+                  <GuessContainer
+                    progress={answer.accuracy}
+                    answer={answer.word}
+                  />
+                </div>
+              );
+            })}
+          </div>
           <TextSearch
             index={index}
             setGuesses={setGuesses}

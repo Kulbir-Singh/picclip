@@ -8,7 +8,7 @@ interface Props {
 export default function GuessContainer({ progress, answer }: Props) {
   return (
     <div className="max-w-[600px] m-auto px-6 text-white/80">
-      <p className="text-2xl font-semibold tracking-wide capitalize min-h-[32px]">
+      <p className="sm:text-2xl font-semibold tracking-wide capitalize min-h-[12px] xs:min-h-[32px] translate-y-2">
         {answer}
       </p>
       <div className="flex items-center">

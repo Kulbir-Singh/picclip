@@ -104,7 +104,7 @@ export default function TextSearch({
   return (
     <div className="flex flex-col px-6">
       <motion.input
-        className="w-full p-3 my-5 text-lg font-semibold bg-gray-300 rounded-sm text-black/90"
+        className="w-full p-3 my-3 font-semibold bg-gray-300 rounded-sm sm:text-lg xs:my-5 text-black/90"
         placeholder="enter your guess"
         animate={error ? "error" : "good"}
         variants={itemVariants}
@@ -141,7 +141,7 @@ export default function TextSearch({
         onClick={() => {
           handleAnswer();
         }}
-        className="max-w-[350px] m-auto border-blue-800 w-fit py-3 px-16 bg-blue-600 rounded-lg text-xl font-semibold tracking-wider relative [&>div]:even:hover:translate-x-0 [&>div>]:hover:translate-x-[100%] [&>div]:duration-1000 overflow-hidden"
+        className="max-w-[350px] m-auto border-blue-800 w-fit py-3 px-16 bg-blue-600 rounded-lg sm:text-xl font-semibold tracking-wider relative [&>div]:even:hover:translate-x-0 [&>div>]:hover:translate-x-[100%] [&>div]:duration-1000 overflow-hidden"
       >
         <div className="absolute bg-blue-700 w-full h-full top-0 rounded-lg -translate-x-[100%] right-0 z-10 ease-in-out" />
         <div className="absolute bg-blue-800 w-full h-full top-0 rounded-lg delay-[150ms] -translate-x-[100%] right-0 z-10 ease-in-out" />
