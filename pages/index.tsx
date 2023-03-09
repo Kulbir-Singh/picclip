@@ -21,9 +21,9 @@ export default function Home() {
   });
 
   const getDailyWord = async () => {
-    const data = await fetch("/api/image");
+    const data = await fetch("/api/dailyWord");
     const jsonRes = await data.json();
-    setDailyWord(jsonRes.imgUrl);
+    setDailyWord(jsonRes.dailyWord);
   };
 
   const initialGuessesRef = useRef(guesses);
@@ -101,12 +101,9 @@ export default function Home() {
             </h1>
             <p className="pt-2 text-blue-300">Guess the picture</p>
           </div>
-          <div className="pb-2 text-3xl tracking-widest text-center">
-            <p>01:00</p>
-          </div>
         </div>
         <div className="max-w-[600px] m-auto pt-1">
-          <div className="relative flex justify-center m-auto overflow-hidden w-80 sm:w-96 h-80 sm:h-96">
+          <div className="relative flex justify-center m-auto overflow-hidden w-72 sm:w-96 h-72 sm:h-96">
             <Picture
               index={index}
               blur={index > 5 ? 0 : 100 / (index * index)}
@@ -119,7 +116,7 @@ export default function Home() {
                   animate={{ y: 0 }}
                   exit={{ y: 150 }}
                   transition={{ delay: 0.5, stiffness: 80 }}
-                  className="absolute bottom-0 w-[150px] text-center border-2 border-black border-b-0 p-3 rounded-t-lg bg-black/50"
+                  className="absolute bottom-0 max-w-[350px] text-center border-2 border-black border-b-0 p-3 rounded-t-lg bg-black/50"
                 >
                   <p className="text-3xl">{dailyWord}</p>
                 </motion.div>
