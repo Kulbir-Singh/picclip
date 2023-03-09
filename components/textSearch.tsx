@@ -69,7 +69,7 @@ export default function TextSearch({
     });
 
     const validWord = await handleWordSearch(answer);
-
+    let updatedGuesses;
     if (answer.length == 0 || repetitiveAns) {
       setError(true);
       window.setTimeout(() => {
@@ -78,7 +78,7 @@ export default function TextSearch({
       setAnswer("");
     } else {
       setIndex(index + 1);
-      const updatedGuesses = {
+      updatedGuesses = {
         ...guesses,
         remainGuesses: guesses.remainGuesses - 1,
         answers: guesses.answers.map((a, i) =>
@@ -87,6 +87,13 @@ export default function TextSearch({
       };
       if (acc == 100) {
         setIndex(6);
+        updatedGuesses = {
+          ...guesses,
+          remainGuesses: 0,
+          answers: guesses.answers.map((a, i) =>
+            i === index - 1 ? { ...a, word: answer, accuracy: acc } : a
+          ),
+        };
       }
 
       setGuesses(updatedGuesses);

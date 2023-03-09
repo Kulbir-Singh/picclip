@@ -5,10 +5,10 @@ import GuessContainer from "../components/ProgressBar";
 import { AnimatePresence, motion } from "framer-motion";
 import TextSearch from "../components/textSearch";
 import PopUp from "../components/popUp";
-import Script from "next/script";
 
 export default function Home() {
   const [index, setIndex] = useState(1);
+  const [dailyWord, setDailyWord] = useState("");
   const [guesses, setGuesses] = useState({
     remainGuesses: 5,
     answers: [
@@ -20,8 +20,15 @@ export default function Home() {
     ],
   });
 
+  const getDailyWord = async () => {
+    const data = await fetch("/api/image");
+    const jsonRes = await data.json();
+    setDailyWord(jsonRes.imgUrl);
+  };
+
   const initialGuessesRef = useRef(guesses);
   useEffect(() => {
+    getDailyWord();
     // window?.document?.getElementById("mainContainer").addEventListener(
     //   "contextmenu",
     //   function (e) {
@@ -35,7 +42,6 @@ export default function Home() {
       d.getHours().toString() +
       d.getMinutes().toString() +
       d.getSeconds().toString();
-    console.log(time);
     if (time === "000") {
       window.localStorage.setItem(
         "guesses",
@@ -102,8 +108,6 @@ export default function Home() {
         <div className="max-w-[600px] m-auto pt-1">
           <div className="relative flex justify-center m-auto overflow-hidden w-80 sm:w-96 h-80 sm:h-96">
             <Picture
-              src="./cat.jpg"
-              alt="brown cat image"
               index={index}
               blur={index > 5 ? 0 : 100 / (index * index)}
               className="absolute inset-0 object-cover w-full m-auto blur-lg"
@@ -117,7 +121,7 @@ export default function Home() {
                   transition={{ delay: 0.5, stiffness: 80 }}
                   className="absolute bottom-0 w-[150px] text-center border-2 border-black border-b-0 p-3 rounded-t-lg bg-black/50"
                 >
-                  <p className="text-3xl">Cat</p>
+                  <p className="text-3xl">{dailyWord}</p>
                 </motion.div>
               )}
             </AnimatePresence>

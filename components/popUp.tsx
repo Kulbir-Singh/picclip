@@ -37,7 +37,7 @@ export default function PopUp({ index, guesses }: Props) {
             </button>
             <p className="text-5xl">Game Over</p>
             <p>
-              {guesses.answers[4].accuracy === 100
+              {guesses.answers.find((acc) => acc.accuracy == 100)
                 ? "You won"
                 : "Better luck next time"}
             </p>
