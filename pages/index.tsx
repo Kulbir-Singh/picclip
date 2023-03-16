@@ -18,6 +18,7 @@ export default function Home() {
       { word: "", accuracy: 0 },
       { word: "", accuracy: 0 },
     ],
+    time: 0,
   });
 
   const getDailyWord = async () => {
@@ -37,26 +38,9 @@ export default function Home() {
     //   false
     // );
     const storedGuesses = window.localStorage.getItem("guesses");
+
     const d = new Date();
-    let time =
-      d.getHours().toString() +
-      d.getMinutes().toString() +
-      d.getSeconds().toString();
-    if (time === "000") {
-      window.localStorage.setItem(
-        "guesses",
-        JSON.stringify({
-          remainGuesses: 5,
-          answers: [
-            { word: "", accuracy: 0 },
-            { word: "", accuracy: 0 },
-            { word: "", accuracy: 0 },
-            { word: "", accuracy: 0 },
-            { word: "", accuracy: 0 },
-          ],
-        })
-      );
-    }
+    const time = (d.getMonth() + 1) * 100 + d.getDate();
     if (!storedGuesses) {
       window.localStorage.setItem(
         "guesses",
@@ -69,10 +53,29 @@ export default function Home() {
             { word: "", accuracy: 0 },
             { word: "", accuracy: 0 },
           ],
+          time: time,
         })
       );
     } else {
       const data = JSON.parse(storedGuesses);
+
+      if (time > data.time) {
+        window.localStorage.setItem(
+          "guesses",
+          JSON.stringify({
+            remainGuesses: 5,
+            answers: [
+              { word: "", accuracy: 0 },
+              { word: "", accuracy: 0 },
+              { word: "", accuracy: 0 },
+              { word: "", accuracy: 0 },
+              { word: "", accuracy: 0 },
+            ],
+            time: time,
+          })
+        );
+      }
+
       setGuesses(data);
       setIndex(5 - data.remainGuesses + 1);
     }
