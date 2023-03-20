@@ -8,6 +8,8 @@ import PopUp from "../components/popUp";
 
 export default function Home() {
   const [index, setIndex] = useState(1);
+  const d = new Date();
+  const time = (d.getMonth() + 1) * 100 + d.getDate();
   const [dailyWord, setDailyWord] = useState("");
   const [guesses, setGuesses] = useState({
     remainGuesses: 5,
@@ -18,7 +20,7 @@ export default function Home() {
       { word: "", accuracy: 0 },
       { word: "", accuracy: 0 },
     ],
-    time: 0,
+    time: time,
   });
 
   const getDailyWord = async () => {
@@ -39,8 +41,6 @@ export default function Home() {
     // );
     const storedGuesses = window.localStorage.getItem("guesses");
 
-    const d = new Date();
-    const time = (d.getMonth() + 1) * 100 + d.getDate();
     if (!storedGuesses) {
       window.localStorage.setItem(
         "guesses",
