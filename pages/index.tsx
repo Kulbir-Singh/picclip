@@ -86,7 +86,7 @@ export default function Home() {
     if (JSON.stringify(initialGuessesRef.current) !== JSON.stringify(guesses)) {
       window.localStorage.setItem("guesses", JSON.stringify(guesses));
     }
-  }, [guesses]);
+  }, [guesses, time]);
 
   return (
     <div id="mainContainer">
