@@ -86,7 +86,7 @@ export default function Home() {
           ],
           time: time,
         });
-        setIndex(5);
+        setIndex(1);
       } else {
         setGuesses(data);
         setIndex(5 - data.remainGuesses + 1);
