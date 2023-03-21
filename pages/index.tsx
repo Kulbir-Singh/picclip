@@ -60,6 +60,7 @@ export default function Home() {
       const data = JSON.parse(storedGuesses);
       console.log(time, data.time, typeof data.time, data);
       if (time > parseInt(data.time)) {
+        console.log(data);
         window.localStorage.setItem(
           "guesses",
           JSON.stringify({
