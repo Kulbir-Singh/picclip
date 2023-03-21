@@ -83,10 +83,10 @@ export default function Home() {
   }, [time]);
 
   useEffect(() => {
+    const storedGuesses = window.localStorage.getItem("guesses");
+    const data = JSON.parse(storedGuesses);
+    console.log(guesses, data);
     if (JSON.stringify(initialGuessesRef.current) !== JSON.stringify(guesses)) {
-      const storedGuesses = window.localStorage.getItem("guesses");
-      const data = JSON.parse(storedGuesses);
-      console.log(guesses, data);
       window.localStorage.setItem("guesses", JSON.stringify(guesses));
     }
   }, [guesses, time]);
