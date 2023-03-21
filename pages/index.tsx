@@ -75,6 +75,7 @@ export default function Home() {
             time: time,
           })
         );
+        setGuesses(initialGuessesRef.current);
       }
 
       setGuesses(data);
@@ -83,15 +84,8 @@ export default function Home() {
   }, [time]);
 
   useEffect(() => {
-    const storedGuesses = window.localStorage.getItem("guesses");
-    const data = JSON.parse(storedGuesses);
-    console.log(guesses, data, initialGuessesRef.current);
     if (JSON.stringify(initialGuessesRef.current) !== JSON.stringify(guesses)) {
       window.localStorage.setItem("guesses", JSON.stringify(guesses));
-    }
-    if (time > parseInt(data.time)) {
-      setGuesses(initialGuessesRef.current);
-      setIndex(5 - initialGuessesRef.current.remainGuesses + 1);
     }
   }, [guesses, time]);
 
