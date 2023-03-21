@@ -80,7 +80,7 @@ export default function Home() {
       setGuesses(data);
       setIndex(5 - data.remainGuesses + 1);
     }
-  }, []);
+  }, [time]);
 
   useEffect(() => {
     if (JSON.stringify(initialGuessesRef.current) !== JSON.stringify(guesses)) {
