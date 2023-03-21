@@ -89,6 +89,10 @@ export default function Home() {
     if (JSON.stringify(initialGuessesRef.current) !== JSON.stringify(guesses)) {
       window.localStorage.setItem("guesses", JSON.stringify(guesses));
     }
+    if (time > parseInt(data.time)) {
+      setGuesses(initialGuessesRef.current);
+      setIndex(5 - initialGuessesRef.current.remainGuesses + 1);
+    }
   }, [guesses, time]);
 
   return (
