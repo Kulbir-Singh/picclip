@@ -59,7 +59,7 @@ export default function Home() {
     } else {
       const data = JSON.parse(storedGuesses);
 
-      if (time > data.time) {
+      if (time > parseInt(data.time)) {
         window.localStorage.setItem(
           "guesses",
           JSON.stringify({
