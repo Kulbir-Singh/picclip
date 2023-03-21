@@ -75,13 +75,23 @@ export default function Home() {
             time: time,
           })
         );
-        setGuesses(initialGuessesRef.current);
+        setGuesses({
+          remainGuesses: 5,
+          answers: [
+            { word: "", accuracy: 0 },
+            { word: "", accuracy: 0 },
+            { word: "", accuracy: 0 },
+            { word: "", accuracy: 0 },
+            { word: "", accuracy: 0 },
+          ],
+          time: time,
+        });
       }
 
       setGuesses(data);
       setIndex(5 - data.remainGuesses + 1);
     }
-  }, [time]);
+  }, []);
 
   useEffect(() => {
     if (JSON.stringify(initialGuessesRef.current) !== JSON.stringify(guesses)) {
