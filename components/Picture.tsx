@@ -24,7 +24,7 @@ export default function Picture({ className, blur, index }: Props) {
   return (
     <picture>
       <motion.img
-        src={data?.imgUrl}
+        src={data ? data.imgUrl : "./placeholder.jpg"}
         className={className}
         initial={{ height: 1000 / (index + 1) + "%" }}
         animate={{ height: 1000 / index + "%" }}

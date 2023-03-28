@@ -27,10 +27,11 @@ const dmSans = Unbounded({
 export default function Home() {
   const { data } = GetImage({});
   const [index, setIndex] = useState(1);
-
+  const newDay = useRef(null);
   const d = new Date();
   const time = (d.getMonth() + 1) * 100 + d.getDate();
   const [showPopup, setShowPopup] = useState(true);
+  const [showHowToPlay, setShowHowToPlay] = useState(newDay.current);
   const [guesses, setGuesses] = useState({
     remainGuesses: 5,
     answers: [
@@ -66,6 +67,7 @@ export default function Home() {
     } else {
       const data = JSON.parse(storedGuesses);
       if (time > parseInt(data.time)) {
+        newDay.current = true;
         window.localStorage.setItem(
           "guesses",
           JSON.stringify({
@@ -114,12 +116,43 @@ export default function Home() {
       </Head>
 
       <main className={"relative h-screen " + dmSans.className}>
-        {/* {time > guesses.time ? "new day" : time + " " + guesses.time} */}
+        <PopUp showPopup={showHowToPlay} index={index}>
+          <div className="w-full">
+            <picture>
+              <img
+                src="./cat.jpg"
+                alt=""
+                className="object-cover w-full max-w-[250px] h-full max-h-[250px] py-5 m-auto"
+              />
+            </picture>
+            <button
+              onClick={() => {
+                newDay.current = false;
+                setShowHowToPlay(newDay.current);
+              }}
+              className="absolute p-4 py-2 text-gray-300 bg-blue-600 border-2 rounded-md right-4 top-4 border-black/80"
+            >
+              X
+            </button>
+            <div className="px-12 space-y-2 text-sm">
+              <p className="">You have to guess the right word.</p>
+              <p className="">Each guess will show you more of the image.</p>
+              <p className="">
+                The progress bar shows you how close your guess is to the
+                picture of the day.
+              </p>
+            </div>
+            <div className="px-6">
+              <GuessContainer small answer="dog" progress={50} />
+              <GuessContainer small answer="cat" progress={100} />
+            </div>
+          </div>
+        </PopUp>
         <PopUp showPopup={showPopup} index={index}>
           <div className="flex flex-col items-center ">
             <picture>
               <img
-                src={data?.imgUrl}
+                src={data ? data.imgUrl : "./placeholder.jpg"}
                 alt=""
                 className="object-cover w-full max-w-[300px] h-full max-h-[300px] py-5"
               />
@@ -160,9 +193,7 @@ export default function Home() {
                   transition={{ delay: 0.5, stiffness: 80 }}
                   className="absolute bottom-0 max-w-[350px] text-center border-2 border-black border-b-0 p-3 rounded-t-lg bg-black/50"
                 >
-                  <p className="text-xl sm:text-3xl">
-                    {dailyWord?.data?.dailyWord}
-                  </p>
+                  <p className="text-xl">{dailyWord?.data?.dailyWord}</p>
                 </motion.div>
               )}
             </AnimatePresence>

@@ -3,12 +3,23 @@ import classNames from "../utils/twClassNames";
 interface Props {
   answer: string;
   progress: number;
+  small?: boolean;
 }
 
-export default function GuessContainer({ progress, answer }: Props) {
+export default function GuessContainer({ progress, answer, small }: Props) {
   return (
-    <div className="max-w-[600px] m-auto px-6 text-white/80">
-      <p className="sm:text-2xl font-semibold tracking-wide capitalize min-h-[12px] xs:min-h-[32px] translate-y-2">
+    <div
+      className={classNames(
+        small ? "text-xs" : "sm:text-lg",
+        "max-w-[600px] m-auto px-6 text-white/80"
+      )}
+    >
+      <p
+        className={classNames(
+          small ? " translate-y-4" : " translate-y-2",
+          " font-semibold tracking-wide capitalize min-h-[12px] xs:min-h-[32px] translate-y-2"
+        )}
+      >
         {answer}
       </p>
       <div className="flex items-center">
