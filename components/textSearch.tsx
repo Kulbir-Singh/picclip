@@ -1,5 +1,7 @@
 import { motion, Variants } from "framer-motion";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { GetWordAccuracy } from "../fetchers/getWordAccuracy";
+import classNames from "../utils/twClassNames";
 
 interface Props {
   setGuesses: Dispatch<SetStateAction<Guesses>>;
@@ -35,32 +37,19 @@ export default function TextSearch({
   setIndex,
 }: Props) {
   const [answer, setAnswer] = useState("");
+  const [acc, setAcc] = useState(true);
+
   const [error, setError] = useState(false);
-  const handleWordSearch = async (answer) => {
-    try {
-      const data = await fetch(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/${answer}`
-      );
-      const res = await data.json();
-
-      if (res?.title == "No Definitions Found") {
-        return false;
-      } else {
-        return true;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const accuracy = async () => {
-    const data = await fetch("/api/textMatching?secondWord=" + answer);
-    const jsonRes = await data.json();
-    return jsonRes;
-  };
-
+  const { data, refetch, isSuccess, isFetched, isLoading, status } =
+    GetWordAccuracy({
+      word: answer,
+      reFetchTriggers: acc,
+    });
   const handleAnswer = async () => {
-    const acc = await accuracy();
+    refetch();
+    if (isLoading) return;
+    if (!isSuccess) return;
+    if (!isFetched) return;
     if (index > 5) {
       return;
     }
@@ -68,7 +57,6 @@ export default function TextSearch({
       return ans.word == answer;
     });
 
-    const validWord = await handleWordSearch(answer);
     let updatedGuesses;
     if (answer.length == 0 || repetitiveAns) {
       setError(true);
@@ -82,16 +70,16 @@ export default function TextSearch({
         ...guesses,
         remainGuesses: guesses.remainGuesses - 1,
         answers: guesses.answers.map((a, i) =>
-          i === index - 1 ? { ...a, word: answer, accuracy: acc } : a
+          i === index - 1 ? { ...a, word: answer, accuracy: data } : a
         ),
       };
-      if (acc == 100) {
+      if (data == 100) {
         setIndex(6);
         updatedGuesses = {
           ...guesses,
           remainGuesses: 0,
           answers: guesses.answers.map((a, i) =>
-            i === index - 1 ? { ...a, word: answer, accuracy: acc } : a
+            i === index - 1 ? { ...a, word: answer, accuracy: data } : a
           ),
         };
       }
@@ -104,7 +92,7 @@ export default function TextSearch({
   return (
     <div className="flex flex-col px-6">
       <motion.input
-        className="w-full p-3 my-3 font-semibold bg-gray-300 rounded-sm sm:text-lg xs:my-5 text-black/90"
+        className="w-full p-3 my-3 font-thin bg-gray-300 rounded-sm xs:my-5 text-black/90"
         placeholder="enter your guess"
         animate={error ? "error" : "good"}
         variants={itemVariants}
@@ -139,13 +127,20 @@ export default function TextSearch({
           },
         }}
         onClick={() => {
+          if (isLoading) return;
           handleAnswer();
+          setAcc(!acc);
         }}
-        className="max-w-[350px] m-auto border-blue-800 w-fit py-3 px-16 bg-blue-600 rounded-lg sm:text-xl font-semibold tracking-wider relative [&>div]:even:hover:translate-x-0 [&>div>]:hover:translate-x-[100%] [&>div]:duration-1000 overflow-hidden"
+        className={classNames(
+          isLoading ? "bg-blue-600/50" : "bg-blue-600",
+          "max-w-[350px] m-auto border-blue-800 w-fit py-3 px-16 rounded-lg sm:text-xl font-semibold tracking-wider relative [&>div]:even:hover:translate-x-0 [&>div>]:hover:translate-x-[100%] [&>div]:duration-1000 overflow-hidden"
+        )}
       >
-        <div className="absolute bg-blue-700 w-full h-full top-0 rounded-lg -translate-x-[100%] right-0 z-10 ease-in-out" />
-        <div className="absolute bg-blue-800 w-full h-full top-0 rounded-lg delay-[150ms] -translate-x-[100%] right-0 z-10 ease-in-out" />
-        <p className="relative z-20">GUESS </p>
+        <span className="absolute bg-blue-700 w-full h-full top-0 rounded-lg -translate-x-[100%] right-0 z-10 ease-in-out" />
+        <span className="absolute bg-blue-800 w-full h-full top-0 rounded-lg delay-[150ms] -translate-x-[100%] right-0 z-10 ease-in-out" />
+        <p className="relative z-20 font-thin">
+          {!isFetched ? "loading" : "Guess"}
+        </p>
       </motion.button>
     </div>
   );

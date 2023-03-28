@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import { GetImage } from "../fetchers/getImage";
 
 interface Props {
   className?: string;
@@ -9,14 +10,9 @@ interface Props {
 }
 
 export default function Picture({ className, blur, index }: Props) {
-  const [imageSrc, setImageSrc] = useState<{ imgUrl: string }>({ imgUrl: "" });
-  const imgSrc = async () => {
-    const data = await fetch("/api/image");
-    const jsonRes = await data.json();
-    setImageSrc(jsonRes);
-  };
+  const { data } = GetImage({});
+
   useEffect(() => {
-    imgSrc();
     window?.document?.getElementById("img").addEventListener(
       "dragstart",
       function (e) {
@@ -28,7 +24,7 @@ export default function Picture({ className, blur, index }: Props) {
   return (
     <picture>
       <motion.img
-        src={imageSrc.imgUrl}
+        src={data?.imgUrl}
         className={className}
         initial={{ height: 1000 / (index + 1) + "%" }}
         animate={{ height: 1000 / index + "%" }}

@@ -5,12 +5,32 @@ import GuessContainer from "../components/ProgressBar";
 import { AnimatePresence, motion } from "framer-motion";
 import TextSearch from "../components/textSearch";
 import PopUp from "../components/popUp";
+import {
+  Gruppo,
+  Beth_Ellen,
+  Labrada,
+  Marcellus,
+  Vidaloka,
+  Rowdies,
+  Staatliches,
+  Unbounded,
+} from "@next/font/google";
+import { GetImage } from "../fetchers/getImage";
+import { GetDailyWord } from "../fetchers/getDailyWord";
+
+const dmSans = Unbounded({
+  subsets: ["latin"],
+  weight: "300",
+  preload: true,
+});
 
 export default function Home() {
+  const { data } = GetImage({});
   const [index, setIndex] = useState(1);
+
   const d = new Date();
   const time = (d.getMonth() + 1) * 100 + d.getDate();
-  const [dailyWord, setDailyWord] = useState("");
+  const [showPopup, setShowPopup] = useState(true);
   const [guesses, setGuesses] = useState({
     remainGuesses: 5,
     answers: [
@@ -22,23 +42,10 @@ export default function Home() {
     ],
     time: time,
   });
-
-  const getDailyWord = async () => {
-    const data = await fetch("/api/dailyWord");
-    const jsonRes = await data.json();
-    setDailyWord(jsonRes.dailyWord);
-  };
+  const dailyWord = GetDailyWord({});
 
   const initialGuessesRef = useRef(guesses);
   useEffect(() => {
-    getDailyWord();
-    // window?.document?.getElementById("mainContainer").addEventListener(
-    //   "contextmenu",
-    //   function (e) {
-    //     e.preventDefault();
-    //   },
-    //   false
-    // );
     const storedGuesses = window.localStorage.getItem("guesses");
 
     if (!storedGuesses) {
@@ -58,9 +65,7 @@ export default function Home() {
       );
     } else {
       const data = JSON.parse(storedGuesses);
-      console.log(time, data.time, typeof data.time, data);
       if (time > parseInt(data.time)) {
-        console.log(data);
         window.localStorage.setItem(
           "guesses",
           JSON.stringify({
@@ -108,11 +113,32 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="relative h-screen">
-        <PopUp guesses={guesses} index={index} />
+      <main className={"relative h-screen " + dmSans.className}>
+        {/* {time > guesses.time ? "new day" : time + " " + guesses.time} */}
+        <PopUp showPopup={showPopup} index={index}>
+          <div className="flex flex-col items-center ">
+            <picture>
+              <img
+                src={data?.imgUrl}
+                alt=""
+                className="object-cover w-full max-w-[300px] h-full max-h-[300px] py-5"
+              />
+            </picture>
+            <button
+              onClick={() => {
+                setShowPopup(false);
+              }}
+              className="absolute p-4 py-2 text-gray-300 bg-blue-600 border-2 rounded-md right-4 top-4 border-black/80"
+            >
+              X
+            </button>
+            <p className="text-lg font-thin">Word of the day</p>
+            <p className="capitalize">{dailyWord?.data?.dailyWord}</p>
+          </div>
+        </PopUp>
         <div className="mb-2 border-b border-gray-400 sm:h-[100px]">
           <div className="text-center">
-            <h1 className="pt-2 font-serif text-3xl font-bold tracking-widest text-blue-700 sm:text-5xl">
+            <h1 className="pt-2 text-3xl font-bold tracking-widest text-blue-700 sm:text-5xl">
               PicClip
             </h1>
             <p className="pb-1 text-blue-300 sm:pt-2">Guess the picture</p>
@@ -134,7 +160,9 @@ export default function Home() {
                   transition={{ delay: 0.5, stiffness: 80 }}
                   className="absolute bottom-0 max-w-[350px] text-center border-2 border-black border-b-0 p-3 rounded-t-lg bg-black/50"
                 >
-                  <p className="text-xl sm:text-3xl">{dailyWord}</p>
+                  <p className="text-xl sm:text-3xl">
+                    {dailyWord?.data?.dailyWord}
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>
