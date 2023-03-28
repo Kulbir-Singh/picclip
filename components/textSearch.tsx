@@ -139,7 +139,7 @@ export default function TextSearch({
         <span className="absolute bg-blue-700 w-full h-full top-0 rounded-lg -translate-x-[100%] right-0 z-10 ease-in-out" />
         <span className="absolute bg-blue-800 w-full h-full top-0 rounded-lg delay-[150ms] -translate-x-[100%] right-0 z-10 ease-in-out" />
         <p className="relative z-20 font-thin">
-          {!isFetched ? "loading" : "Guess"}
+          {!isFetched ? "Loading..." : "Guess"}
         </p>
       </motion.button>
     </div>
