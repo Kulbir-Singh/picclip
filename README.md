@@ -4,7 +4,7 @@
 <img src="./picclipDemo.PNG"/>
 
 ## Goal
-To Build a game that uses <a href="https://github.com/UKPLab/sentence-transformers" target="__blank">sentence-transformers</a> and nextjs built in backend. I've used python replit to build out the backend.
+To Build a game that uses <a href="https://github.com/UKPLab/sentence-transformers" target="__blank">sentence-transformers</a> and python as a backend.
 
 ### Run the project
 
