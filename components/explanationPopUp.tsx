@@ -1,4 +1,4 @@
-import React, { Dispatch, MutableRefObject, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import PopUp from "./popUp";
 import GuessContainer from "./ProgressBar";
 
@@ -12,7 +12,6 @@ interface Props {
 }
 
 export default function ExplanationPopUp({
-  showPopup,
   index,
   newDay,
   setShowHowToPlay,

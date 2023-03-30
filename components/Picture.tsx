@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { GetImage } from "../fetchers/getImage";
 
 interface Props {

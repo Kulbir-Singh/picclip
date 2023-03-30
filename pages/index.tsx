@@ -1,8 +1,5 @@
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import Picture from "../components/Picture";
-import GuessContainer from "../components/ProgressBar";
-import { AnimatePresence, motion } from "framer-motion";
 import TextSearch from "../components/textSearch";
 import { Unbounded } from "@next/font/google";
 import { GetImage } from "../fetchers/getImage";
